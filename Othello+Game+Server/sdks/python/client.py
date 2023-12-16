@@ -3,82 +3,134 @@
 import sys
 import json
 import socket
+import random
 
 valid_moves = []
 
 def get_move(player, board):
   # make sure moves is empty each turn
-  valid_moves.clear
+  valid_moves.clear()
 
   # TODO determine valid moves
 
   # need to check horizontal
-  horizontal_check(player, board, 'top_to_bottom')
-  horizontal_check(player, board, 'bottom_to_top')
+  horizontal_check(player, board, 'l_to_r')
+  horizontal_check(player, board, 'r_to_l')
 
   # need to check vertical
-  vertical_check(player, board, 'l_to_r')
-  vertical_check(player, board, 'r_to_l')
+  vertical_check(player, board, 'top_to_bottom')
+  vertical_check(player, board, 'bottom_to_top')
 
   # need to check diagonal
   diagonal_check(player, board, 'top_left_to_bottom_right')
   diagonal_check(player, board, 'bottom_right_to_top_left')
+  diagonal_check_2(player, board, 'bottom_left_to_top_right')
+  diagonal_check_2(player, board, 'bottom_left_to_top_right')
 
-  print(valid_moves)
+
+  print(valid_moves, "valid moves")
+
+  return random.choice(valid_moves)
+
 
   # TODO determine best move
-  return [2, 3]
 
-
-def horizontal_check(player, board, direction):
+def vertical_check(player, board, direction):
   if direction == 'top_to_bottom':
-    start, end, step = 0, len(board) - 2, 1
+    start, end, step = 0, 5, 1
+    change = 2
   elif direction == 'bottom_to_top':
-    start, end, step = len(board) - 1, 1, -1
+    start, end, step = 7, 2, -1
+    change = -2
 
-  for j in range(len(board[0])):
+  for j in range(8):
     for i in range(start, end, step):
       if board[i][j] == player and board[i+step][j] != player and board[i+step][j] != 0:
-        while (i+2*step != end) and (board[i+2*step][j] != player):
-          if board[i+2*step][j] == 0:
-            valid_moves.append([i+2*step, j])
-          i += step
+        searcher = i + change
+        while (searcher != -1) and (searcher != 8) and (board[searcher][j] != player):
+          if board[searcher][j] == 0:
+            valid_moves.append([searcher, j])
+            break
+          searcher += step
       else:
         continue
 
-
-def vertical_check(player, board, direction):
+def horizontal_check(player, board, direction):
   if direction == 'l_to_r':
-    start, end, step = 0, len(board[0]) - 2, 1
+    change = 2
+    start, end, step = 0, 5, 1
   elif direction == 'r_to_l':
-    start, end, step = len(board[0]) - 1, 1, -1
+    start, end, step = 7, 2, -1
+    change = -2
 
-  for i in range(len(board)):
-    for j in range(start, end, step):
-      if board[i][j] == player and board[i][j+step] != player and board[i][j+step] != 0:
-        while (j+2*step != end) and (board[i][j+2*step] != player):
-          if board[i][j+2*step] == 0:
-            valid_moves.append([i, j+2*step])
-          j += step
+  for j in range(8):
+    for i in range(start, end, step):
+      if board[j][i] == player and board[j][i+step] != player and board[j][i+step] != 0:
+        searcher = i + change
+        while (searcher != -1) and (searcher != 8) and (board[j][searcher] != player):
+          if board[j][searcher] == 0:
+            valid_moves.append([j, searcher])
+            break
+          searcher += step
       else:
         continue
 
 def diagonal_check(player, board, direction):
   if direction == 'top_left_to_bottom_right':
-    start, end, step = 0, min(len(board), len(board[0])) - 2, 1
+    start, end, step = 0, 6, 1
+    change = 2
   elif direction == 'bottom_right_to_top_left':
-    start, end, step = min(len(board), len(board[0])) - 1, 1, -1
+    start, end, step = 7, 1, -1
+    change = -2
 
-  for i in range(start, end, step):
-    for j in range(start, end, step):
-      if board[i][j] == player and board[i+step][j+step] != player and board[i+step][j+step] != 0:
-        while (i+2*step != end) and (j+2*step != end) and (board[i+2*step][j+2*step] != player):
-          if board[i+2*step][j+2*step] == 0:
-            valid_moves.append([i+2*step, j+2*step])
-          i += step
-          j += step
+  for j in range(start, end, step):
+    for i in range(start, end, step):
+      if board[j][i] == player and board[j+step][i+step] != player and board[j+step][i+step] != 0:
+        searcher = i + change
+        searcher2 = j + change
+        while (searcher != -1) and (searcher != 8) and (searcher2 != -1) and (searcher2 != 8) and (board[searcher2][searcher] != player):
+          if board[searcher2][searcher] == 0:
+            if [searcher2, searcher] not in valid_moves:
+              valid_moves.append([searcher2, searcher])
+              break
+            else:
+              break
+          searcher += step
+          searcher2 += step
       else:
         continue
+
+def diagonal_check_2(player, board, direction):
+  if direction == 'bottom_left_to_top_right':
+    starti, endi, stepi = 0, 6, 1
+    startj, endj, stepj = 7, 1, -1
+
+    changej = -2
+    changei = 2
+  elif direction == 'top_right_to_bottom_left':
+    starti, endi, stepi = 7, 1, -1
+    startj, endj, stepj = 0, 6, 1
+    changei = -2
+    changej = 2
+
+  for j in range(startj, endj, stepj):
+    for i in range(starti, endi, stepi):
+      if board[j][i] == player and board[j+stepj][i+stepi] != player and board[j+stepj][i+stepi] != 0:
+        searcher = i + changei
+        searcher2 = j + changej
+        while (searcher != -1) and (searcher != 8) and (searcher2 != -1) and (searcher2 != 8) and (board[searcher2][searcher] != player):
+          if board[searcher2][searcher] == 0:
+            if [searcher2, searcher] not in valid_moves:
+              valid_moves.append([searcher2, searcher])
+              break
+            else:
+              break
+          searcher += stepi
+          searcher2 += stepj
+      else:
+        continue
+
+
 
 def prepare_response(move):
   response = '{}\n'.format(move).encode()
