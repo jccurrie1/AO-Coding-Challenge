@@ -6,12 +6,19 @@ import socket
 import random
 
 valid_moves = []
+static_weight = [
+  [100, -30, 6, 2, 2, 6, -30, 100],
+  [-30, -50, 0, 0, 0, 0, -50, -30],
+  [6, 0, 0, 0, 0, 0, 0, 6],
+  [2, 0, 0, 3, 3, 0, 0, 2],
+  [6, 0, 0, 0, 0, 0, 0, 6],
+  [-30, -50, 0, 0, 0, 0, -50, -30],
+  [100, -30, 6, 2, 2, 6, -30, 100]
+]
 
 def get_move(player, board):
   # make sure moves is empty each turn
   valid_moves.clear()
-
-  # TODO determine valid moves
 
   # need to check horizontal
   horizontal_check(player, board, 'l_to_r')
@@ -27,20 +34,19 @@ def get_move(player, board):
   diagonal_check_2(player, board, 'bottom_left_to_top_right')
   diagonal_check_2(player, board, 'bottom_left_to_top_right')
 
-
   print(valid_moves, "valid moves")
-
-  return random.choice(valid_moves)
-
 
   # TODO determine best move
 
+
+  return random.choice(valid_moves)
+
 def vertical_check(player, board, direction):
   if direction == 'top_to_bottom':
-    start, end, step = 0, 5, 1
+    start, end, step = 0, 6, 1
     change = 2
   elif direction == 'bottom_to_top':
-    start, end, step = 7, 2, -1
+    start, end, step = 7, 1, -1
     change = -2
 
   for j in range(8):
@@ -58,9 +64,9 @@ def vertical_check(player, board, direction):
 def horizontal_check(player, board, direction):
   if direction == 'l_to_r':
     change = 2
-    start, end, step = 0, 5, 1
+    start, end, step = 0, 6, 1
   elif direction == 'r_to_l':
-    start, end, step = 7, 2, -1
+    start, end, step = 7, 1, -1
     change = -2
 
   for j in range(8):
@@ -129,8 +135,6 @@ def diagonal_check_2(player, board, direction):
           searcher2 += stepj
       else:
         continue
-
-
 
 def prepare_response(move):
   response = '{}\n'.format(move).encode()
