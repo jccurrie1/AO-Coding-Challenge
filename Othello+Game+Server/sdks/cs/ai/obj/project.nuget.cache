@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "59vAaX0LVMYn0p8/SYJywNb0yb5kAkON9x7/Vr2SXDT3yUTiEi8yVobjeu4oman9LumnXrYBi4FbjQulqn4B9g==",
+  "success": true,
+  "projectFilePath": "/Users/jaredcurrie/Documents/Othello+Game+Server/sdks/cs/ai/ai.csproj",
+  "expectedPackageFiles": [
+    "/Users/jaredcurrie/.nuget/packages/microsoft.netcore.platforms/1.1.0/microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "/Users/jaredcurrie/.nuget/packages/netstandard.library/2.0.3/netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

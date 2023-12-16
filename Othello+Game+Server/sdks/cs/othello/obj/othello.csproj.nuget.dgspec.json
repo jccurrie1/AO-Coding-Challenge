@@ -1,0 +1,132 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/jaredcurrie/Documents/Othello+Game+Server/sdks/cs/othello/othello.csproj": {}
+  },
+  "projects": {
+    "/Users/jaredcurrie/Documents/Othello+Game+Server/sdks/cs/ai/ai.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/jaredcurrie/Documents/Othello+Game+Server/sdks/cs/ai/ai.csproj",
+        "projectName": "ai",
+        "projectPath": "/Users/jaredcurrie/Documents/Othello+Game+Server/sdks/cs/ai/ai.csproj",
+        "packagesPath": "/Users/jaredcurrie/.nuget/packages/",
+        "outputPath": "/Users/jaredcurrie/Documents/Othello+Game+Server/sdks/cs/ai/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/jaredcurrie/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "targetAlias": "netstandard2.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "targetAlias": "netstandard2.0",
+          "dependencies": {
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.203/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/jaredcurrie/Documents/Othello+Game+Server/sdks/cs/othello/othello.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/jaredcurrie/Documents/Othello+Game+Server/sdks/cs/othello/othello.csproj",
+        "projectName": "othello",
+        "projectPath": "/Users/jaredcurrie/Documents/Othello+Game+Server/sdks/cs/othello/othello.csproj",
+        "packagesPath": "/Users/jaredcurrie/.nuget/packages/",
+        "outputPath": "/Users/jaredcurrie/Documents/Othello+Game+Server/sdks/cs/othello/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/jaredcurrie/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.1": {
+            "targetAlias": "netcoreapp2.1",
+            "projectReferences": {
+              "/Users/jaredcurrie/Documents/Othello+Game+Server/sdks/cs/ai/ai.csproj": {
+                "projectPath": "/Users/jaredcurrie/Documents/Othello+Game+Server/sdks/cs/ai/ai.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.1": {
+          "targetAlias": "netcoreapp2.1",
+          "dependencies": {
+            "CommandLineParser": {
+              "target": "Package",
+              "version": "[2.3.0, )"
+            },
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.1.0, )",
+              "autoReferenced": true
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[11.0.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.203/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
