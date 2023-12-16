@@ -4,10 +4,45 @@ import sys
 import json
 import socket
 
+valid_moves = []
+
 def get_move(player, board):
+  # make sure moves is empty each turn
+  valid_moves.clear
+
   # TODO determine valid moves
+
+  # need to check horizontal
+
+  # need to check vertical
+  vertical_check(player, board, 'l_to_r')
+  vertical_check(player, board, 'r_to_l')
+
+  print(valid_moves)
+
+
+
+  # need to check diagonal
+
   # TODO determine best move
   return [2, 3]
+
+
+def vertical_check(player, board, direction):
+  if direction == 'l_to_r':
+    start, end, step = 0, len(board[0]) - 2, 1
+  elif direction == 'r_to_l':
+    start, end, step = len(board[0]) - 1, 1, -1
+
+  for i in range(len(board)):
+    for j in range(start, end, step):
+      if board[i][j] == player and board[i][j+step] != player and board[i][j+step] != 0:
+        while (j+2*step != end) and (board[i][j+2*step] != player):
+          if board[i][j+2*step] == 0:
+            valid_moves.append([i, j+2*step])
+          j += step
+      else:
+        continue
 
 def prepare_response(move):
   response = '{}\n'.format(move).encode()
