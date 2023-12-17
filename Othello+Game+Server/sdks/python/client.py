@@ -3,7 +3,6 @@
 import sys
 import json
 import socket
-import random
 
 valid_moves = []
 static_weight = [
@@ -11,35 +10,31 @@ static_weight = [
   [-30, -50, 0, 0, 0, 0, -50, -30],
   [6, 0, 0, 0, 0, 0, 0, 6],
   [2, 0, 0, 3, 3, 0, 0, 2],
+  [2, 0, 0, 3, 3, 0, 0, 2],
   [6, 0, 0, 0, 0, 0, 0, 6],
   [-30, -50, 0, 0, 0, 0, -50, -30],
   [100, -30, 6, 2, 2, 6, -30, 100]
 ]
 
 def get_move(player, board):
-  # make sure moves is empty each turn
   valid_moves.clear()
 
-  # need to check horizontal
   horizontal_check(player, board, 'l_to_r')
   horizontal_check(player, board, 'r_to_l')
 
-  # need to check vertical
   vertical_check(player, board, 'top_to_bottom')
   vertical_check(player, board, 'bottom_to_top')
 
-  # need to check diagonal
   diagonal_check(player, board, 'top_left_to_bottom_right')
   diagonal_check(player, board, 'bottom_right_to_top_left')
   diagonal_check_2(player, board, 'bottom_left_to_top_right')
   diagonal_check_2(player, board, 'bottom_left_to_top_right')
 
-  print(valid_moves, "valid moves")
+  # Map valid moves to their respective weights
+  weights = {tuple(move): static_weight[move[0]][move[1]] for move in valid_moves}
+  best_move = max(weights, key=weights.get)
 
-  # TODO determine best move
-
-
-  return random.choice(valid_moves)
+  return list(best_move)
 
 def vertical_check(player, board, direction):
   if direction == 'top_to_bottom':
@@ -110,7 +105,6 @@ def diagonal_check_2(player, board, direction):
   if direction == 'bottom_left_to_top_right':
     starti, endi, stepi = 0, 6, 1
     startj, endj, stepj = 7, 1, -1
-
     changej = -2
     changei = 2
   elif direction == 'top_right_to_bottom_left':
