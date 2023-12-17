@@ -19,16 +19,19 @@ static_weight = [
 def get_move(player, board):
   valid_moves.clear()
 
-  horizontal_check(player, board, 'l_to_r')
-  horizontal_check(player, board, 'r_to_l')
+  # horizontal
+  check_for_valid_move(player, board, start_x=0, end_x=8, step_x=1, second_coordinate_change_x=0, third_coordinate_change_x=0, start_y=0, end_y=6, step_y=1, second_coordinate_change_y=1, third_coordinate_change_y=2) # left to right
+  check_for_valid_move(player, board, start_x=0, end_x=8, step_x=1, second_coordinate_change_x=0, third_coordinate_change_x=0, start_y=7, end_y=1, step_y=-1, second_coordinate_change_y=-1, third_coordinate_change_y=-2) # right to left
 
-  vertical_check(player, board, 'top_to_bottom')
-  vertical_check(player, board, 'bottom_to_top')
+  # vertical
+  check_for_valid_move(player, board, start_x=0, end_x=6, step_x=1, second_coordinate_change_x=1, third_coordinate_change_x=2, start_y=0, end_y=8, step_y=1, second_coordinate_change_y=0, third_coordinate_change_y=0) # top to bottom
+  check_for_valid_move(player, board, start_x=7, end_x=1, step_x=-1, second_coordinate_change_x=-1, third_coordinate_change_x=-2, start_y=0, end_y=8, step_y=1, second_coordinate_change_y=0, third_coordinate_change_y=0) # bottom to top
 
-  diagonal_check(player, board, 'top_left_to_bottom_right')
-  diagonal_check(player, board, 'bottom_right_to_top_left')
-  diagonal_check_2(player, board, 'bottom_left_to_top_right')
-  diagonal_check_2(player, board, 'bottom_left_to_top_right')
+  # diagonal
+  check_for_valid_move(player, board, start_x=0, end_x=6, step_x=1, second_coordinate_change_x=1, third_coordinate_change_x=2, start_y=0, end_y=6, step_y=1, second_coordinate_change_y=1, third_coordinate_change_y=2) # top left to bottom right
+  check_for_valid_move(player, board, start_x=0, end_x=6, step_x=1, second_coordinate_change_x=1, third_coordinate_change_x=2, start_y=7, end_y=1, step_y=-1, second_coordinate_change_y=-1, third_coordinate_change_y=-2) # top right to bottom left
+  check_for_valid_move(player, board, start_x=7, end_x=1, step_x=-1, second_coordinate_change_x=-1, third_coordinate_change_x=-2, start_y=7, end_y=1, step_y=-1, second_coordinate_change_y=-1, third_coordinate_change_y=-2) # bottom right to top left
+  check_for_valid_move(player, board, start_x=7, end_x=1, step_x=-1, second_coordinate_change_x=-1, third_coordinate_change_x=-2, start_y=0, end_y=6, step_y=1, second_coordinate_change_y=1, third_coordinate_change_y=2) # bottom left to top right
 
   # Map valid moves to their respective weights
   weights = {tuple(move): static_weight[move[0]][move[1]] for move in valid_moves}
@@ -36,97 +39,21 @@ def get_move(player, board):
 
   return list(best_move)
 
-def vertical_check(player, board, direction):
-  if direction == 'top_to_bottom':
-    start, end, step = 0, 6, 1
-    change = 2
-  elif direction == 'bottom_to_top':
-    start, end, step = 7, 1, -1
-    change = -2
-
-  for j in range(8):
-    for i in range(start, end, step):
-      if board[i][j] == player and board[i+step][j] != player and board[i+step][j] != 0:
-        searcher = i + change
-        while (searcher != -1) and (searcher != 8) and (board[searcher][j] != player):
-          if board[searcher][j] == 0:
-            valid_moves.append([searcher, j])
-            break
-          searcher += step
-      else:
-        continue
-
-def horizontal_check(player, board, direction):
-  if direction == 'l_to_r':
-    change = 2
-    start, end, step = 0, 6, 1
-  elif direction == 'r_to_l':
-    start, end, step = 7, 1, -1
-    change = -2
-
-  for j in range(8):
-    for i in range(start, end, step):
-      if board[j][i] == player and board[j][i+step] != player and board[j][i+step] != 0:
-        searcher = i + change
-        while (searcher != -1) and (searcher != 8) and (board[j][searcher] != player):
-          if board[j][searcher] == 0:
-            valid_moves.append([j, searcher])
-            break
-          searcher += step
-      else:
-        continue
-
-def diagonal_check(player, board, direction):
-  if direction == 'top_left_to_bottom_right':
-    start, end, step = 0, 6, 1
-    change = 2
-  elif direction == 'bottom_right_to_top_left':
-    start, end, step = 7, 1, -1
-    change = -2
-
-  for j in range(start, end, step):
-    for i in range(start, end, step):
-      if board[j][i] == player and board[j+step][i+step] != player and board[j+step][i+step] != 0:
-        searcher = i + change
-        searcher2 = j + change
-        while (searcher != -1) and (searcher != 8) and (searcher2 != -1) and (searcher2 != 8) and (board[searcher2][searcher] != player):
-          if board[searcher2][searcher] == 0:
-            if [searcher2, searcher] not in valid_moves:
-              valid_moves.append([searcher2, searcher])
+def check_for_valid_move(player, board, start_x, end_x, step_x, second_coordinate_change_x, third_coordinate_change_x, start_y, end_y, step_y, second_coordinate_change_y, third_coordinate_change_y):
+  for x in range(start_x, end_x, step_x):
+    for y in range(start_y, end_y, step_y):
+      if board[x][y] == player and board[x+second_coordinate_change_x][y+second_coordinate_change_y] != player and board[x+second_coordinate_change_x][y+second_coordinate_change_y] != 0:
+        searcher_x = x + third_coordinate_change_x
+        searcher_y = y + third_coordinate_change_y
+        while (searcher_x != -1) and (searcher_x != 8) and (searcher_y != -1) and (searcher_y != 8) and (board[searcher_x][searcher_y] != player):
+          if board[searcher_x][searcher_y] == 0:
+            if [searcher_x, searcher_y] not in valid_moves:
+              valid_moves.append([searcher_x, searcher_y])
               break
             else:
               break
-          searcher += step
-          searcher2 += step
-      else:
-        continue
-
-def diagonal_check_2(player, board, direction):
-  if direction == 'bottom_left_to_top_right':
-    starti, endi, stepi = 0, 6, 1
-    startj, endj, stepj = 7, 1, -1
-    changej = -2
-    changei = 2
-  elif direction == 'top_right_to_bottom_left':
-    starti, endi, stepi = 7, 1, -1
-    startj, endj, stepj = 0, 6, 1
-    changei = -2
-    changej = 2
-
-  for j in range(startj, endj, stepj):
-    for i in range(starti, endi, stepi):
-      if board[j][i] == player and board[j+stepj][i+stepi] != player and board[j+stepj][i+stepi] != 0:
-        searcher = i + changei
-        searcher2 = j + changej
-        while (searcher != -1) and (searcher != 8) and (searcher2 != -1) and (searcher2 != 8) and (board[searcher2][searcher] != player):
-          if board[searcher2][searcher] == 0:
-            if [searcher2, searcher] not in valid_moves:
-              valid_moves.append([searcher2, searcher])
-              break
-            else:
-              break
-          searcher += stepi
-          searcher2 += stepj
+          searcher_x += second_coordinate_change_x
+          searcher_y += second_coordinate_change_y
       else:
         continue
 
